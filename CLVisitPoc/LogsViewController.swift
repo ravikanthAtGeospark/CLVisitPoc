@@ -35,6 +35,17 @@ class LogsViewController: UIViewController {
         let logsDisplayVC = storyBoard.instantiateViewController(withIdentifier: "LogsViewController") as! LogsViewController
         return logsDisplayVC
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+
+    }
 
 }
 
