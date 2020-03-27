@@ -7,70 +7,38 @@
 //
 
 import UIKit
+import UserNotifications
 
-class LogsViewController: UIViewController {
-
-    @IBOutlet weak var tableView: UITableView!
-    var dataCount:[Dictionary<String,Any>] = []
+class LogsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let nib = UINib(nibName: "LocationTableViewCell", bundle: nil)
-        self.tableView.register(nib, forCellReuseIdentifier: "LocationTableViewCell")
-        serverLogs()
-    }
-    
-    func serverLogs(){
-        let dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyForLatLongInfo")
-        if dataArray?.count != 0 && dataArray != nil{
-            dataCount = dataArray as! [Dictionary<String,Any>]
-            DispatchQueue.main.async {
-                self.dataCount = self.dataCount.reversed()
-                self.tableView.reloadData()
-            }
-        }
-    }
-    static public func viewController() -> LogsViewController {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let logsDisplayVC = storyBoard.instantiateViewController(withIdentifier: "LogsViewController") as! LogsViewController
-        return logsDisplayVC
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-
-    }
-
-}
-
-extension LogsViewController:UITableViewDelegate,UITableViewDataSource{
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataCount.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LocationTableViewCell") as? LocationTableViewCell
-        print(dataCount[indexPath.row])
-        let dic:Dictionary<String,Any> = dataCount[indexPath.row]
-        let lat = dic["latitude"] as? Double
-        let lng = dic["longitude"] as? Double
-        let source = dic["source"] as? String
-        let date = dic["timeStamp"] as? String
-
-        cell?.lat.text = "latitude   " + "\(String(describing: lat!))"
-        cell?.lng.text = "longitude   " + "\(String(describing: lng!))"
-        cell?.status.text =  source
-        cell?.date.text = "Recorded at   " + date!
-        return cell!
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(newLocationAdded(_:)),
+            name: .newLocationSaved,
+            object: nil)
+    }
+    
+    @objc func newLocationAdded(_ notification: Notification) {
+        tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return LocationsStorage.shared.locations.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
+        let location = LocationsStorage.shared.locations[indexPath.row]
+        cell.textLabel?.numberOfLines = 3
+        cell.textLabel?.text = location.description
+        cell.detailTextLabel?.text = location.dateString
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 110
     }
 }
-//        let dataDictionary = ["latitude" : location.latitude, "longitude" : location.longitude,"timeStamp" : currentTimestampWithHours(),"source":source] as [String : Any]
-
