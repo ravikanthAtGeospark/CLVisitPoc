@@ -14,6 +14,7 @@ class LogsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("LogsViewController",LocationsStorage.shared.locations)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newLocationAdded(_:)),
@@ -34,7 +35,7 @@ class LogsViewController: UITableViewController {
         let location = LocationsStorage.shared.locations[indexPath.row]
         cell.textLabel?.numberOfLines = 3
         cell.textLabel?.text = location.description
-        cell.detailTextLabel?.text = location.dateString
+        cell.detailTextLabel?.text = location.arravialDateString
         return cell
     }
     

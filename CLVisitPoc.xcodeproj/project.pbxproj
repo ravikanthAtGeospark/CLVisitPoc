@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B599A662431EBAE004FDCBD /* MapViewController.swift */; };
 		7B7D5120242CA89500D3A415 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D511F242CA89500D3A415 /* AppDelegate.swift */; };
 		7B7D5122242CA89500D3A415 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D5121242CA89500D3A415 /* SceneDelegate.swift */; };
 		7B7D5127242CA89500D3A415 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5125242CA89500D3A415 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B599A662431EBAE004FDCBD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B7D511C242CA89500D3A415 /* CLVisitPoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CLVisitPoc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7D511F242CA89500D3A415 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B7D5121242CA89500D3A415 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B599A652431EB95004FDCBD /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7B7D5138242CD1AB00D3A415 /* LogsViewController.swift */,
+				7B599A662431EBAE004FDCBD /* MapViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		7B599A682431EBBB004FDCBD /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				7B7D511F242CA89500D3A415 /* AppDelegate.swift */,
+				7B7D5121242CA89500D3A415 /* SceneDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
 		7B7D5113242CA89400D3A415 = {
 			isa = PBXGroup;
 			children = (
@@ -69,11 +89,10 @@
 			isa = PBXGroup;
 			children = (
 				7B7D5174242E170100D3A415 /* Route.gpx */,
+				7B599A682431EBBB004FDCBD /* AppDelegate */,
+				7B599A652431EB95004FDCBD /* ViewController */,
 				7B7D5171242E129E00D3A415 /* Location */,
 				7B7D513E242CD85200D3A415 /* cell */,
-				7B7D511F242CA89500D3A415 /* AppDelegate.swift */,
-				7B7D5121242CA89500D3A415 /* SceneDelegate.swift */,
-				7B7D5138242CD1AB00D3A415 /* LogsViewController.swift */,
 				7B7D5125242CA89500D3A415 /* Main.storyboard */,
 				7B7D5128242CA89800D3A415 /* Assets.xcassets */,
 				7B7D512A242CA89800D3A415 /* LaunchScreen.storyboard */,
@@ -181,6 +200,7 @@
 				7B7D5135242CB14500D3A415 /* Logger.swift in Sources */,
 				7B7D516E242E0F0700D3A415 /* Location.swift in Sources */,
 				7B7D5170242E128700D3A415 /* LocationsStorage.swift in Sources */,
+				7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,7 +345,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B92BAJFGJP;
 				INFOPLIST_FILE = CLVisitPoc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -345,7 +365,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B92BAJFGJP;
 				INFOPLIST_FILE = CLVisitPoc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -24,18 +24,20 @@ class Location: Codable {
   let latitude: Double
   let longitude: Double
   let date: Date
-  let dateString: String
+  let departureDate: Date
+  let arravialDateString: String
   let description: String
   
-  init(_ location: CLLocationCoordinate2D, date: Date, descriptionString: String) {
+  init(_ location: CLLocationCoordinate2D, dateArrival: Date, dateDepart: Date,descriptionString: String) {
     latitude =  location.latitude
     longitude =  location.longitude
-    self.date = date
-    dateString = Location.dateFormatter.string(from: date)
+    self.date = dateArrival
+    self.departureDate = dateDepart
+    arravialDateString = Location.dateFormatter.string(from: dateArrival)
     description = descriptionString
   }
   
   convenience init(visit: CLVisit, descriptionString: String) {
-    self.init(visit.coordinate, date: visit.arrivalDate, descriptionString: descriptionString)
+    self.init(visit.coordinate, dateArrival: visit.arrivalDate,dateDepart:visit.departureDate, descriptionString: descriptionString)
   }
 }

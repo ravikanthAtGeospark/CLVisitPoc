@@ -73,7 +73,7 @@ class LocationsStorage {
     let currentDate = Date()
     AppDelegate.geoCoder.reverseGeocodeLocation(clLocation) { placemarks, _ in
       if let place = placemarks?.first {
-        let location = Location(clLocation.coordinate, date: currentDate, descriptionString: "\(place)")
+        let location = Location(clLocation.coordinate, dateArrival: currentDate, dateDepart: currentDate, descriptionString: "\(place)")
         self.saveLocationOnDisk(location)
       }
     }

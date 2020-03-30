@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.requestAlwaysAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.startMonitoringSignificantLocationChanges()
         locationManager.startMonitoringVisits()
 
 //        locationManager.distanceFilter = 35 // 0
@@ -85,8 +86,7 @@ extension AppDelegate:CLLocationManagerDelegate{
       
       AppDelegate.geoCoder.reverseGeocodeLocation(location) { placemarks, _ in
         if let place = placemarks?.first {
-          let description = "Fake visit: \(place)"
-          
+          let description = "SignificantLocation \(place)"
           let fakeVisit = FakeVisit(coordinates: location.coordinate, arrivalDate: Date(), departureDate: Date())
           self.newVisitReceived(fakeVisit, description: description)
         }
@@ -104,7 +104,7 @@ extension AppDelegate:CLLocationManagerDelegate{
         content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: location.dateString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: location.arravialDateString, content: content, trigger: trigger)
         
         center.add(request, withCompletionHandler: nil)
     }
