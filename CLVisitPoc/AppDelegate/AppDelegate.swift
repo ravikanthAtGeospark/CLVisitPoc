@@ -23,13 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in
         }
-    
+
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.startMonitoringSignificantLocationChanges()
         locationManager.startMonitoringVisits()
+
+        if UserDefaults.standard.bool(forKey: "IsFirst") == false{
+            UserDefaults.standard.set(true, forKey: "IsFirst")
+            locationManager.startMonitoringSignificantLocationChanges()
+        }
 
 //        locationManager.distanceFilter = 35 // 0
 //        locationManager.allowsBackgroundLocationUpdates = true // 1
