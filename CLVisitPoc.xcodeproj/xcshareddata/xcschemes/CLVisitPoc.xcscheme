@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7B7D511B242CA89500D3A415"
-               BuildableName = "CLVisitPoc.app"
+               BuildableName = "2.3 POC.app"
                BlueprintName = "CLVisitPoc"
                ReferencedContainer = "container:CLVisitPoc.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7B7D511B242CA89500D3A415"
-            BuildableName = "CLVisitPoc.app"
+            BuildableName = "2.3 POC.app"
             BlueprintName = "CLVisitPoc"
             ReferencedContainer = "container:CLVisitPoc.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7B7D511B242CA89500D3A415"
-            BuildableName = "CLVisitPoc.app"
+            BuildableName = "2.3 POC.app"
             BlueprintName = "CLVisitPoc"
             ReferencedContainer = "container:CLVisitPoc.xcodeproj">
          </BuildableReference>

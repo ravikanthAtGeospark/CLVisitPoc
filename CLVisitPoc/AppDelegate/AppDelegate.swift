@@ -23,22 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in
         }
-
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.startMonitoringVisits()
-
-        if UserDefaults.standard.bool(forKey: "IsFirst") == false{
-            UserDefaults.standard.set(true, forKey: "IsFirst")
+        
+            locationManager.delegate = self
+            locationManager.requestAlwaysAuthorization()
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.pausesLocationUpdatesAutomatically = false
             locationManager.startMonitoringSignificantLocationChanges()
-        }
+            locationManager.startMonitoringVisits()
+            
+
 
 //        locationManager.distanceFilter = 35 // 0
 //        locationManager.allowsBackgroundLocationUpdates = true // 1
 //        locationManager.startUpdatingLocation()  // 2
-
+//
         self.registerBG()
         return true
     }
@@ -71,10 +69,22 @@ extension AppDelegate:CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         let clLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        self.createSingle(clLocation.coordinate)
         AppDelegate.geoCoder.reverseGeocodeLocation(clLocation) { (placemarks, error) in
             if let place = placemarks?.first{
-                let desc = "\(place)"
+                let desc = "CLVisit \(place)"
                 self.newVisitReceived(visit, description: desc)
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        self.createSingle(manager.location!.coordinate)
+        AppDelegate.geoCoder.reverseGeocodeLocation(manager.location!) { (placemarks, error) in
+            if let place = placemarks?.first{
+                let desc = "Region Monitoring \(place)"
+                let fakeVisit = FakeVisit(coordinates: manager.location!.coordinate, arrivalDate: Date(), departureDate: Date())
+                self.newVisitReceived(fakeVisit, description: desc)
             }
         }
     }
@@ -87,7 +97,7 @@ extension AppDelegate:CLLocationManagerDelegate{
       guard let location = locations.first else {
         return
       }
-      
+      self.createSingle(location.coordinate)
       AppDelegate.geoCoder.reverseGeocodeLocation(location) { placemarks, _ in
         if let place = placemarks?.first {
           let description = "SignificantLocation \(place)"
@@ -113,6 +123,19 @@ extension AppDelegate:CLLocationManagerDelegate{
         center.add(request, withCompletionHandler: nil)
     }
     
+    func createSingle(_ coordinate: CLLocationCoordinate2D){
+        cleareGeofence()
+        let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,longitude: coordinate.longitude),radius: 75,   identifier: "identifier")
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        locationManager.startMonitoring(for: region)
+    }
+    
+    func cleareGeofence(){
+        locationManager.monitoredRegions.forEach { region in
+            locationManager.stopMonitoring(for: region)
+        }
+    }
 }
 final class FakeVisit: CLVisit {
   private let myCoordinates: CLLocationCoordinate2D

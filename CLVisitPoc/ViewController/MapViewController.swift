@@ -25,7 +25,6 @@ class MapViewController: UIViewController, MKMapViewDelegate{
         mapView.delegate = self
         updateMap()
         
-        
     }
     
     func updateMap(){
