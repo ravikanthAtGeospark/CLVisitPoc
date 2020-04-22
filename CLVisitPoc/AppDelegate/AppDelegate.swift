@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         
-        
+        UIDevice.current.isBatteryMonitoringEnabled = true
+
         LocationManager.sharedInstance.startTracking()
         LocationManager.sharedInstance.delegate = self
         
@@ -56,11 +57,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     }
     
     
-    func updateLocation(_ location: CLLocation, desc: String) {
-        self.updateData(location, desc: "\(desc) \("    ") \(location.description)")
+    func updateLocation(_ location: CLLocation, desc: String, activity: String) {
+        self.updateData(location, desc: "\(desc) \("    ") \(location.description)", activity: activity)
+  
+        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus())
+        print(json)
+        
+        do {
+            MQTTManager.sharedInstance.publish(try json.jsonString())
+        }
+        catch{
+            print("Catch Error")
+        }
+
+        
     }
     
-    func updateData(_ location: CLLocation, desc: String){
+    func updateData(_ location: CLLocation, desc: String, activity: String) {
         print("updateData",desc)
         let location = Location(location.coordinate, dateArrival: location.timestamp, dateDepart: location.timestamp, descriptionString: desc)
         LocationsStorage.shared.saveLocationOnDisk(location)
@@ -77,6 +90,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         center.add(request, withCompletionHandler: nil)
 
     }
+    
+    func batteryStatus() -> Int{
+        return Int(UIDevice.current.batteryLevel*100)
+    }
+
 }
 
 extension TimeInterval {

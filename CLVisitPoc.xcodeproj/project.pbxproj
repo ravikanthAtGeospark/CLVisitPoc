@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,9 +21,14 @@
 		7B7D516E242E0F0700D3A415 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D516D242E0F0700D3A415 /* Location.swift */; };
 		7B7D5170242E128700D3A415 /* LocationsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D516F242E128700D3A415 /* LocationsStorage.swift */; };
 		7B7D5175242E170100D3A415 /* Route.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5174242E170100D3A415 /* Route.gpx */; };
+		7BE0A8C724500DC400243EB8 /* PublishMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8C624500DC400243EB8 /* PublishMessage.swift */; };
+		7BE0A8CA24501D4100243EB8 /* MQTTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8C924501D4100243EB8 /* MQTTManager.swift */; };
+		7BE0A8CC245020AC00243EB8 /* AWSConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */; };
+		BA9D991DFD699AEA9F624208 /* Pods_CLVisitPoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21FD9493DF71AFB3354C39A /* Pods_CLVisitPoc.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FEB26FFB603D1377E06F665 /* Pods-CLVisitPoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CLVisitPoc.release.xcconfig"; path = "Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc.release.xcconfig"; sourceTree = "<group>"; };
 		7B57963A244EDF8800BAB42B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7B599A662431EBAE004FDCBD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B7D511C242CA89500D3A415 /* 2.3 POC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2.3 POC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,6 +45,11 @@
 		7B7D516D242E0F0700D3A415 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		7B7D516F242E128700D3A415 /* LocationsStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsStorage.swift; path = CLVisitPoc/Location/LocationsStorage.swift; sourceTree = SOURCE_ROOT; };
 		7B7D5174242E170100D3A415 /* Route.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Route.gpx; sourceTree = "<group>"; };
+		7BE0A8C624500DC400243EB8 /* PublishMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublishMessage.swift; sourceTree = "<group>"; };
+		7BE0A8C924501D4100243EB8 /* MQTTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTManager.swift; sourceTree = "<group>"; };
+		7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSConstant.swift; sourceTree = "<group>"; };
+		D21FD9493DF71AFB3354C39A /* Pods_CLVisitPoc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CLVisitPoc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7A416DF33EE3C3710879C78 /* Pods-CLVisitPoc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CLVisitPoc.debug.xcconfig"; path = "Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,12 +57,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA9D991DFD699AEA9F624208 /* Pods_CLVisitPoc.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		662EB05BDCB050D70972241D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D21FD9493DF71AFB3354C39A /* Pods_CLVisitPoc.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7B599A652431EB95004FDCBD /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +95,8 @@
 			children = (
 				7B7D511E242CA89500D3A415 /* CLVisitPoc */,
 				7B7D511D242CA89500D3A415 /* Products */,
+				945274448163FC1F5CDD6864 /* Pods */,
+				662EB05BDCB050D70972241D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,12 +136,24 @@
 		7B7D5171242E129E00D3A415 /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				7BE0A8C624500DC400243EB8 /* PublishMessage.swift */,
 				7B7D516D242E0F0700D3A415 /* Location.swift */,
 				7B7D5134242CB14500D3A415 /* Logger.swift */,
+				7BE0A8C924501D4100243EB8 /* MQTTManager.swift */,
 				7B7D516F242E128700D3A415 /* LocationsStorage.swift */,
 				7B57963A244EDF8800BAB42B /* LocationManager.swift */,
+				7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		945274448163FC1F5CDD6864 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D7A416DF33EE3C3710879C78 /* Pods-CLVisitPoc.debug.xcconfig */,
+				2FEB26FFB603D1377E06F665 /* Pods-CLVisitPoc.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,9 +163,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B7D5130242CA89800D3A415 /* Build configuration list for PBXNativeTarget "CLVisitPoc" */;
 			buildPhases = (
+				C2BF19436CA860008C7C0B7B /* [CP] Check Pods Manifest.lock */,
 				7B7D5118242CA89500D3A415 /* Sources */,
 				7B7D5119242CA89500D3A415 /* Frameworks */,
 				7B7D511A242CA89500D3A415 /* Resources */,
+				EE24BD127E09BDF80FCCA9A3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -191,6 +226,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C2BF19436CA860008C7C0B7B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CLVisitPoc-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE24BD127E09BDF80FCCA9A3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7B7D5118242CA89500D3A415 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -205,6 +282,9 @@
 				7B7D5170242E128700D3A415 /* LocationsStorage.swift in Sources */,
 				7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */,
 				7B57963B244EDF8800BAB42B /* LocationManager.swift in Sources */,
+				7BE0A8CC245020AC00243EB8 /* AWSConstant.swift in Sources */,
+				7BE0A8CA24501D4100243EB8 /* MQTTManager.swift in Sources */,
+				7BE0A8C724500DC400243EB8 /* PublishMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +426,7 @@
 		};
 		7B7D5131242CA89800D3A415 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7A416DF33EE3C3710879C78 /* Pods-CLVisitPoc.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -366,6 +447,7 @@
 		};
 		7B7D5132242CA89800D3A415 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FEB26FFB603D1377E06F665 /* Pods-CLVisitPoc.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

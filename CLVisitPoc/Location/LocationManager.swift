@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 protocol LocationManagerDelegate {
-    func updateLocation(_ location:CLLocation,desc:String)
+    func updateLocation(_ location:CLLocation,desc:String,activity:String)
 }
 class LocationManager: NSObject {
     
@@ -35,6 +35,7 @@ class LocationManager: NSObject {
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startMonitoringSignificantLocationChanges()
         locationManager.startMonitoringVisits()
+        
     }
     
     func stopTracking(){
@@ -52,16 +53,15 @@ extension LocationManager:CLLocationManagerDelegate{
         guard let location = locations.first else {
             return
         }
-        
         if isSignificantLocationChanges(location){
             UserDefaults.standard.removeObject(forKey: lastLocationDefaults)
             UserDefaults.standard.synchronize()
             self.saveLocation(location)
-            updateLocation(location, "SignificantLocation")
+            updateLocation(location, "SignificantLocation", "M")
         }else{
             if isRequestLocation && manager == locationManager1{
                 isRequestLocation = false
-                updateLocation(location, "SignificantLocation")
+                updateLocation(location, "SignificantLocation", "W")
             }
         }
     }
@@ -94,8 +94,8 @@ extension LocationManager:CLLocationManagerDelegate{
         }
     }
     
-    func updateLocation(_ location:CLLocation, _ desc:String){
-        delegate?.updateLocation(location, desc: desc)
+    func updateLocation(_ location:CLLocation, _ desc:String,_ activity:String){
+        delegate?.updateLocation(location, desc: desc, activity: activity)
     }
     
     func saveLocation(_ location:CLLocation){
