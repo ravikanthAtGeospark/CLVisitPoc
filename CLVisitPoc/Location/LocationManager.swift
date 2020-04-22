@@ -61,16 +61,17 @@ extension LocationManager:CLLocationManagerDelegate{
         }else{
             if isRequestLocation && manager == locationManager1{
                 isRequestLocation = false
-                updateLocation(location, "SignificantLocation", "W")
+                updateLocation(location, "ExitRegion/CLVisit", "W")
             }
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {        LoggerManager.sharedInstance.writeLocationToFile("ExitRegion \(manager.location?.description ?? "ExitRegion")")
         self.requestLocationOnce()
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        LoggerManager.sharedInstance.writeLocationToFile("CLVisit \(manager.location?.description ?? "CLVisit")")
         self.requestLocationOnce()
     }
     
@@ -95,6 +96,8 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func updateLocation(_ location:CLLocation, _ desc:String,_ activity:String){
+        createSingle(location.coordinate)
+        LoggerManager.sharedInstance.writeLocationToFile("\(desc)\("       ")\(location.description)")
         delegate?.updateLocation(location, desc: desc, activity: activity)
     }
     
