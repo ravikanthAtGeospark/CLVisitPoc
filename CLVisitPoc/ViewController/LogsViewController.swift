@@ -11,15 +11,32 @@ import UserNotifications
 
 class LogsViewController: UITableViewController {
     
+    
+    var dataCount:[Dictionary<String,Any>] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("LogsViewController",LocationsStorage.shared.locations)
+        serverLogs()
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newLocationAdded(_:)),
             name: .newLocationSaved,
             object: nil)
+        
+        
+    }
+    
+    func serverLogs(){
+        let dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyMapLocation")
+        if dataArray?.count != 0 && dataArray != nil{
+            dataCount = dataArray as! [Dictionary<String,Any>]
+            DispatchQueue.main.async {
+                self.dataCount = self.dataCount.reversed()
+                self.tableView.reloadData()
+            }
+        }
     }
     
     @objc func newLocationAdded(_ notification: Notification) {
@@ -27,15 +44,16 @@ class LogsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return LocationsStorage.shared.locations.count
+        return self.dataCount.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
-        let location = LocationsStorage.shared.locations[indexPath.row]
-        cell.textLabel?.text = location.description
-        cell.detailTextLabel?.text = location.arravialDateString
+        let dic:Dictionary<String,Any> = dataCount[indexPath.row]
+        cell.textLabel?.text = dic["desc"] as? String
+        cell.detailTextLabel?.text = dic["timeStamp"] as? String
         return cell
     }
     
 }
+

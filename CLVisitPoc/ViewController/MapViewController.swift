@@ -10,53 +10,96 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate{
-
+    
     @IBOutlet weak var mapView: MKMapView!
+    
+    var locations: [[String: Any]]?
+    let annotation = MKPointAnnotation()
+    var points: [CLLocationCoordinate2D] = [CLLocationCoordinate2D]()
+    var last:CLLocationCoordinate2D?
+    var datePicker : UIDatePicker!
+    let toolBar = UIToolbar()
+    
+    static public func viewController() -> MapViewController {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let logsDisplayVC = storyBoard.instantiateViewController(withIdentifier: "MapViewController") as! MapViewController
+        return logsDisplayVC
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setAnnotations()
+        NotificationCenter.default.addObserver(self, selector: #selector(setAnnotations), name: .newLocationSaved, object: nil)
+    }
     
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(newLocationAdded(_:)),
-            name: .newLocationSaved,
-            object: nil)
-
-        mapView.delegate = self
-        updateMap()
+    
+    @objc func setAnnotations(){
         
-    }
-    
-    func updateMap(){
         clearMonitoring()
-        let annotations = getMapAnnotations()
-        mapView.addAnnotations(annotations)
-  
-        guard let firstLocation = LocationsStorage.shared.locations.first else {
-            return;
+        
+        let datas  = UserDefaults.standard.array(forKey: "GeoSparkKeyForLatLongInfo") as? [[String:Any]]
+        if  datas != nil{
+            var dataValue:[[String:Any]] = []
+            for data in (datas?.enumerated())! {
+                let dateVal = data.element
+                dataValue.append(dateVal)
+            }
+            
+            let annotations = getMapAnnotations(dataValue)
+            mapView.addAnnotations(annotations)
+            for annotation in annotations {
+                points.append(annotation.coordinate)
+                if (annotations.last != nil){
+                    last = CLLocationCoordinate2D(latitude: (annotations.last?.latitude)!, longitude: (annotations.last?.longitude)!)
+                    zoomToRegion(last!)
+                }
+            }
+            
+            if points.count != 0 {
+                let polyline = MKPolyline(coordinates: &points, count: points.count)
+                mapView.addOverlay(polyline)
+                points.removeAll()
+            }else {
+                clearMonitoring()
+            }
+            
         }
-        self.zoomToRegion(CLLocationCoordinate2D(latitude: firstLocation.latitude, longitude: firstLocation.longitude))
+    }
+    
+    func zoomToRegion(_ location:CLLocationCoordinate2D) {
+        
+        let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000.0, longitudinalMeters: 7000.0)
+        mapView.setRegion(region, animated: true)
     }
     
     
-    @objc func newLocationAdded(_ notification: Notification) {
-        updateMap()
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+        
+        if overlay is MKPolyline {
+            polylineRenderer.strokeColor = UIColor.blue
+            polylineRenderer.lineWidth = 1
+        }
+        return polylineRenderer
     }
-
     
-    func getMapAnnotations() -> [Station] {
-           var annotations:Array = [Station]()
-           
-        for item in LocationsStorage.shared.locations.enumerated() {
+    //MARK:- Annotations
+    
+    func getMapAnnotations(_ dict:[[String:Any]]) -> [Station] {
+        var annotations:Array = [Station]()
+        
+        for item in dict.enumerated() {
             let locDict = item.element
-            let annotation = Station(latitude: locDict.latitude, longitude: locDict.longitude)
-            annotation.title = locDict.description
-            annotation.subtitle = locDict.arravialDateString
+            let lat = locDict["latitude"] as! Double
+            let long = locDict["longitude"] as! Double
+            let annotation = Station(latitude: lat, longitude: long)
+            annotation.title = locDict["desc"] as? String
             annotations.append(annotation)
-           }
-           return annotations
-       }
-
+        }
+        return annotations
+    }
+    
     func clearMonitoring(){
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove )
@@ -65,12 +108,6 @@ class MapViewController: UIViewController, MKMapViewDelegate{
             self.mapView.removeOverlays(overlays)
         }
     }
-
-    func zoomToRegion(_ location:CLLocationCoordinate2D) {
-        let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000.0, longitudinalMeters: 7000.0)
-        mapView.setRegion(region, animated: true)
-    }
-
 }
 
 class Station: NSObject, MKAnnotation {
@@ -88,4 +125,3 @@ class Station: NSObject, MKAnnotation {
         self.longitude = longitude
     }
 }
-

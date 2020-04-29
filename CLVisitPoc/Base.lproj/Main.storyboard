@@ -10,7 +10,7 @@
         <!--Map-->
         <scene sceneID="CA0-w0-P0B">
             <objects>
-                <viewController storyboardIdentifier="MapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KiR-xc-ZRU" customClass="MapViewController" customModule="CLVisitPoc" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KiR-xc-ZRU" customClass="MapViewController" customModule="__3_POC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lA1-7V-EYe">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,6 +40,40 @@
             </objects>
             <point key="canvasLocation" x="-1102" y="207"/>
         </scene>
+        <!--Clear-->
+        <scene sceneID="jyP-Fc-de6">
+            <objects>
+                <viewController storyboardIdentifier="ClearViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="C7N-Nd-zbG" customClass="ClearViewController" customModule="__3_POC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MOx-ds-PMZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNc-ir-1SA">
+                                <rect key="frame" x="20" y="425.5" width="374" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="nc5-iP-ndP"/>
+                                </constraints>
+                                <state key="normal" title="Clear Map &amp; log  Data"/>
+                                <connections>
+                                    <action selector="clearBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="eYS-kk-s9u"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="iNc-ir-1SA" firstAttribute="centerX" secondItem="MOx-ds-PMZ" secondAttribute="centerX" id="FUd-St-SuS"/>
+                            <constraint firstItem="iNc-ir-1SA" firstAttribute="centerY" secondItem="MOx-ds-PMZ" secondAttribute="centerY" id="FWd-Xb-4Wc"/>
+                            <constraint firstItem="MQj-o2-Kz7" firstAttribute="trailing" secondItem="iNc-ir-1SA" secondAttribute="trailing" constant="20" id="UAS-4J-pkc"/>
+                            <constraint firstItem="iNc-ir-1SA" firstAttribute="leading" secondItem="MQj-o2-Kz7" secondAttribute="leading" constant="20" id="vqa-bt-YFp"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MQj-o2-Kz7"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Clear" image="clear" catalog="system" selectedImage="clear" id="JFA-ik-0dQ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="095-P5-jqi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1077" y="911"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="qhy-nk-U9u">
             <objects>
@@ -52,6 +86,7 @@
                     <connections>
                         <segue destination="KiR-xc-ZRU" kind="relationship" relationship="viewControllers" id="q2X-yb-PEB"/>
                         <segue destination="Bbg-GC-Lre" kind="relationship" relationship="viewControllers" id="YPr-Eg-O5Z"/>
+                        <segue destination="C7N-Nd-zbG" kind="relationship" relationship="viewControllers" id="9yT-j9-B6o"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DOb-qT-BQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -61,7 +96,7 @@
         <!--List-->
         <scene sceneID="ZVq-Iv-OoE">
             <objects>
-                <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="Bbg-GC-Lre" customClass="LogsViewController" customModule="CLVisitPoc" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="Bbg-GC-Lre" customClass="LogsViewController" customModule="__3_POC" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9aO-nm-tmo">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,6 +141,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="clear" catalog="system" width="64" height="56"/>
         <image name="list.dash" catalog="system" width="64" height="42"/>
         <image name="map" catalog="system" width="64" height="56"/>
     </resources>

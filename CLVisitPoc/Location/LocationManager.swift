@@ -9,10 +9,15 @@
 import Foundation
 import CoreLocation
 
+
 protocol LocationManagerDelegate {
     func updateLocation(_ location:CLLocation,desc:String,activity:String)
 }
 class LocationManager: NSObject {
+    
+    private let regionString = "Region Monitoring"
+    private let visitString = "Did Visit"
+    private let significantString = "Significant"
     
     public static let sharedInstance = LocationManager()
     var delegate:LocationManagerDelegate?
@@ -23,9 +28,9 @@ class LocationManager: NSObject {
     private let isFirstLocation = "isFirstLocation"
     
     private let locationManager = CLLocationManager()
-    private var locationManager1:CLLocationManager?
-    
     private var isRequestLocation:Bool  = false
+    private var activityString:String = ""
+    private var locationType:String = ""
     
     
     func startTracking(){
@@ -53,25 +58,39 @@ extension LocationManager:CLLocationManagerDelegate{
         guard let location = locations.first else {
             return
         }
-        if isSignificantLocationChanges(location){
-            UserDefaults.standard.removeObject(forKey: lastLocationDefaults)
-            UserDefaults.standard.synchronize()
-            self.saveLocation(location)
-            updateLocation(location, "SignificantLocation", "M")
-        }else{
-            if isRequestLocation && manager == locationManager1{
-                isRequestLocation = false
-                updateLocation(location, "ExitRegion/CLVisit", "W")
+        
+        if manager == locationManager {
+            if isSignificantLocationChanges(location){
+                saveLogs(manager.location!, "SignificantLocation")
+                self.requestLocationOnce()
+                self.activityString = "W"
             }
+        }else{
+            print("didUpdateLocations Precise" )
+            if activityString == "R"{
+                locationType = regionString
+            }else if activityString == "S"{
+                locationType = visitString
+            }else{
+                locationType = significantString
+                self.saveLocation(manager.location!)
+            }
+            saveLogs(manager.location!, "Precise location ")
+            updateLocation(location, locationType,activityString)
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {        LoggerManager.sharedInstance.writeLocationToFile("ExitRegion \(manager.location?.description ?? "ExitRegion")")
-        self.requestLocationOnce()
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if manager == locationManager{
+            self.activityString = "R"
+            saveLogs(manager.location!, "Region Monitoring ")
+            self.requestLocationOnce()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-        LoggerManager.sharedInstance.writeLocationToFile("CLVisit \(manager.location?.description ?? "CLVisit")")
+        saveLogs(manager.location!,visitString)
         self.requestLocationOnce()
     }
     
@@ -97,35 +116,29 @@ extension LocationManager:CLLocationManagerDelegate{
     
     func updateLocation(_ location:CLLocation, _ desc:String,_ activity:String){
         createSingle(location.coordinate)
-        LoggerManager.sharedInstance.writeLocationToFile("\(desc)\("       ")\(location.description)")
         delegate?.updateLocation(location, desc: desc, activity: activity)
     }
     
     func saveLocation(_ location:CLLocation){
-        let loc = LastLocation(location)
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        do{
-            let data = try? encoder.encode(loc)
-            UserDefaults.standard.set(data, forKey: lastLocationDefaults)
-            UserDefaults.standard.synchronize()
-        }
+        UserDefaults.standard.set(location.coordinate.latitude, forKey: "latitude")
+        UserDefaults.standard.set(location.coordinate.longitude, forKey: "longitude")
+        UserDefaults.standard.set(location.horizontalAccuracy, forKey: "accuracy")
+        UserDefaults.standard.set(location.timestamp, forKey: "timestamp")
+        UserDefaults.standard.synchronize()
     }
     
-    func getLastLocation() -> LastLocation?{
-        var lastLocation:LastLocation?
-        let locatData = UserDefaults.standard.data(forKey: lastLocationDefaults)
-        if locatData == nil{
-            return lastLocation
-        }else{
-            do{
-             let decoder = JSONDecoder()
-              return try? decoder.decode(LastLocation.self, from: locatData!)
-            }
-            catch{
-                return lastLocation
-            }
+    func getLastLocation() -> CLLocation?{
+        let lat = UserDefaults.standard.double(forKey: "latitude")
+        let lng = UserDefaults.standard.double(forKey: "longitude")
+        let time = UserDefaults.standard.object(forKey: "timestamp")
+        let accuracy = UserDefaults.standard.double(forKey: "accuracy")
+        
+        if lat != 0.0 && lng != 0.0{
+            let loc = CLLocation(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: time! as! Date)
+            return loc
         }
+        
+        return CLLocation()
     }
     
     func isSignificantLocationChanges( _ location:CLLocation) -> Bool{
@@ -135,14 +148,12 @@ extension LocationManager:CLLocationManagerDelegate{
             UserDefaults.standard.set(true, forKey: isFirstLocation)
             return true
         } else if lastLocation == nil{
-            return false
+            return true
         }else{
             
-            let lastLocationDetails = CLLocation(coordinate: CLLocationCoordinate2D(latitude: lastLocation!.latitude, longitude: lastLocation!.longitude), altitude: lastLocation!.altitude, horizontalAccuracy: lastLocation!.horizontalAccuracy, verticalAccuracy: lastLocation!.verticalAccuracy, timestamp: lastLocation!.timeStamp)
-            
-            let timeDifference = location.timestamp.timeIntervalSince(lastLocationDetails.timestamp)
-            let distanceDifference = location.distance(from: lastLocationDetails)
-            let accuracyDifference = location.horizontalAccuracy > lastLocationDetails.horizontalAccuracy
+            let timeDifference = location.timestamp.timeIntervalSince(lastLocation!.timestamp)
+            let distanceDifference = location.distance(from: lastLocation!)
+            let accuracyDifference = lastLocation!.horizontalAccuracy > location.horizontalAccuracy
             if timeDifference.minutes >= 5{
                 return true
             }else if distanceDifference  > 300 {
@@ -155,22 +166,37 @@ extension LocationManager:CLLocationManagerDelegate{
         }
         
     }
+    
+    func saveLogs(_ location:CLLocation,_ descr:String){
+        
+        let dataDictionary = ["desc":"\(descr ) \("     ") \(location.description)","timeStamp":currentTimestamp()]
+        var dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyMapLocation")
+        if let _ = dataArray {
+            dataArray?.append(dataDictionary)
+        }else{
+            dataArray = [dataDictionary]
+        }
+        UserDefaults.standard.set(dataArray, forKey: "GeoSparkKeyMapLocation")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func currentTimestamp() -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm:ss"
+        let date = Date()
+        return dateFormatter.string(from: date)
+    }
+
 }
 
 extension LocationManager{
     
     func requestLocationOnce(){
-        self.isRequestLocation = true
-        locationManager1 = CLLocationManager()
-        locationManager1!.delegate = self
-        locationManager1!.requestAlwaysAuthorization()
-        locationManager1!.allowsBackgroundLocationUpdates = true
-        locationManager1!.pausesLocationUpdatesAutomatically = false
-        locationManager1!.requestLocation()
-    }
-    
-    func requestLoctionStop(){
-        locationManager1 = nil
+        let locationManager1 = CLLocationManager()
+        locationManager1.delegate = self
+        locationManager1.allowsBackgroundLocationUpdates = true
+        locationManager1.pausesLocationUpdatesAutomatically = false
+        locationManager1.requestLocation()
     }
     
 }

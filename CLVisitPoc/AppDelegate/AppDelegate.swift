@@ -58,10 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
     
     func updateLocation(_ location: CLLocation, desc: String, activity: String) {
-        self.updateData(location, desc: "\(desc) \("    ") \(location.description)", activity: activity)
-  
+        self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
+        self.saveLocationToLocal(location)
         let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus())
-        print(json)
         
         do {
             MQTTManager.sharedInstance.publish(try json.jsonString())
@@ -69,30 +68,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         catch{
             print("Catch Error")
         }
-
         
     }
     
     func updateData(_ location: CLLocation, desc: String, activity: String) {
-        print("updateData",desc)
-        let location = Location(location.coordinate, dateArrival: location.timestamp, dateDepart: location.timestamp, descriptionString: desc)
-        LocationsStorage.shared.saveLocationOnDisk(location)
-        LoggerManager.sharedInstance.writeLocationToFile(location.description)
-        
+        LoggerManager.sharedInstance.writeLocationToFile("\(desc ) \("     ")\(location.description)")
         let content = UNMutableNotificationContent()
-        content.title = "New Journal entry 📌"
+        content.title = "Location Update 📌"
         content.body = location.description
         content.sound = UNNotificationSound.default
-        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: location.arravialDateString, content: content, trigger: trigger)
-        
+        let request = UNNotificationRequest(identifier: "\(location.timestamp)", content: content, trigger: trigger)
         center.add(request, withCompletionHandler: nil)
 
     }
     
     func batteryStatus() -> Int{
         return Int(UIDevice.current.batteryLevel*100)
+    }
+    
+    func saveLocationToLocal(_ location:CLLocation) {
+        let dataDictionary = ["latitude" : location.coordinate.latitude, "longitude" : location.coordinate.longitude,"desc":"Precise location \("    ") \(location.description)","timeStamp" : currentTimestamp()] as [String : Any]
+        var dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyForLatLongInfo")
+        if let _ = dataArray {
+            dataArray?.append(dataDictionary)
+        }else{
+            dataArray = [dataDictionary]
+        }
+        UserDefaults.standard.set(dataArray, forKey: "GeoSparkKeyForLatLongInfo")
+        UserDefaults.standard.synchronize()
+    }
+
+    
+    func currentTimestamp() -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = Date()
+        return dateFormatter.string(from: date)
     }
 
 }
