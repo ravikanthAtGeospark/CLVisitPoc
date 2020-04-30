@@ -58,8 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
     
     func updateLocation(_ location: CLLocation, desc: String, activity: String) {
+        Utilis.savePDFData("Updating Precise location will be Notified.. \n \(location.description)")
         self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
-        self.saveLocationToLocal(location)
+        Utilis.saveLocationToLocal(location)
         let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus())
         
         do {
@@ -72,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     }
     
     func updateData(_ location: CLLocation, desc: String, activity: String) {
+        Utilis.savePDFData("Show Notification")
         LoggerManager.sharedInstance.writeLocationToFile("\(desc ) \("     ")\(location.description)")
         let content = UNMutableNotificationContent()
         content.title = "Location Update 📌"
@@ -87,25 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         return Int(UIDevice.current.batteryLevel*100)
     }
     
-    func saveLocationToLocal(_ location:CLLocation) {
-        let dataDictionary = ["latitude" : location.coordinate.latitude, "longitude" : location.coordinate.longitude,"desc":"Precise location \("    ") \(location.description)","timeStamp" : currentTimestamp()] as [String : Any]
-        var dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyForLatLongInfo")
-        if let _ = dataArray {
-            dataArray?.append(dataDictionary)
-        }else{
-            dataArray = [dataDictionary]
-        }
-        UserDefaults.standard.set(dataArray, forKey: "GeoSparkKeyForLatLongInfo")
-        UserDefaults.standard.synchronize()
-    }
-
-    
-    func currentTimestamp() -> String {
-        let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = Date()
-        return dateFormatter.string(from: date)
-    }
 
 }
 

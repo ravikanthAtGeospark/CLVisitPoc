@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7B57963B244EDF8800BAB42B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B57963A244EDF8800BAB42B /* LocationManager.swift */; };
 		7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B599A662431EBAE004FDCBD /* MapViewController.swift */; };
+		7B5A5B77245AF788007B6FCE /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5A5B76245AF788007B6FCE /* PDFCreator.swift */; };
 		7B683C2B2456FDB10024EA09 /* ClearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B683C2A2456FDB10024EA09 /* ClearViewController.swift */; };
 		7B7D5120242CA89500D3A415 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D511F242CA89500D3A415 /* AppDelegate.swift */; };
 		7B7D5122242CA89500D3A415 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D5121242CA89500D3A415 /* SceneDelegate.swift */; };
@@ -20,6 +21,7 @@
 		7B7D5141242CD86400D3A415 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D513F242CD86400D3A415 /* LocationTableViewCell.swift */; };
 		7B7D5142242CD86400D3A415 /* LocationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5140242CD86400D3A415 /* LocationTableViewCell.xib */; };
 		7B7D5175242E170100D3A415 /* Route.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5174242E170100D3A415 /* Route.gpx */; };
+		7BC8FDC72459A39F00DC5E0D /* Utilis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC8FDC62459A39F00DC5E0D /* Utilis.swift */; };
 		7BE0A8C724500DC400243EB8 /* PublishMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8C624500DC400243EB8 /* PublishMessage.swift */; };
 		7BE0A8CA24501D4100243EB8 /* MQTTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8C924501D4100243EB8 /* MQTTManager.swift */; };
 		7BE0A8CC245020AC00243EB8 /* AWSConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */; };
@@ -30,6 +32,7 @@
 		2FEB26FFB603D1377E06F665 /* Pods-CLVisitPoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CLVisitPoc.release.xcconfig"; path = "Target Support Files/Pods-CLVisitPoc/Pods-CLVisitPoc.release.xcconfig"; sourceTree = "<group>"; };
 		7B57963A244EDF8800BAB42B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7B599A662431EBAE004FDCBD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		7B5A5B76245AF788007B6FCE /* PDFCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		7B683C2A2456FDB10024EA09 /* ClearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearViewController.swift; sourceTree = "<group>"; };
 		7B7D511C242CA89500D3A415 /* 2.3 POC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2.3 POC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7D511F242CA89500D3A415 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +46,7 @@
 		7B7D513F242CD86400D3A415 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		7B7D5140242CD86400D3A415 /* LocationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationTableViewCell.xib; sourceTree = "<group>"; };
 		7B7D5174242E170100D3A415 /* Route.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Route.gpx; sourceTree = "<group>"; };
+		7BC8FDC62459A39F00DC5E0D /* Utilis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilis.swift; sourceTree = "<group>"; };
 		7BE0A8C624500DC400243EB8 /* PublishMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublishMessage.swift; sourceTree = "<group>"; };
 		7BE0A8C924501D4100243EB8 /* MQTTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MQTTManager.swift; sourceTree = "<group>"; };
 		7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSConstant.swift; sourceTree = "<group>"; };
@@ -135,11 +139,13 @@
 		7B7D5171242E129E00D3A415 /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				7B5A5B76245AF788007B6FCE /* PDFCreator.swift */,
 				7BE0A8C624500DC400243EB8 /* PublishMessage.swift */,
 				7B7D5134242CB14500D3A415 /* Logger.swift */,
 				7BE0A8C924501D4100243EB8 /* MQTTManager.swift */,
 				7B57963A244EDF8800BAB42B /* LocationManager.swift */,
 				7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */,
+				7BC8FDC62459A39F00DC5E0D /* Utilis.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -275,11 +281,13 @@
 				7B7D5139242CD1AB00D3A415 /* LogsViewController.swift in Sources */,
 				7B7D5120242CA89500D3A415 /* AppDelegate.swift in Sources */,
 				7B7D5122242CA89500D3A415 /* SceneDelegate.swift in Sources */,
+				7BC8FDC72459A39F00DC5E0D /* Utilis.swift in Sources */,
 				7B7D5135242CB14500D3A415 /* Logger.swift in Sources */,
 				7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */,
 				7B57963B244EDF8800BAB42B /* LocationManager.swift in Sources */,
 				7BE0A8CC245020AC00243EB8 /* AWSConstant.swift in Sources */,
 				7BE0A8CA24501D4100243EB8 /* MQTTManager.swift in Sources */,
+				7B5A5B77245AF788007B6FCE /* PDFCreator.swift in Sources */,
 				7BE0A8C724500DC400243EB8 /* PublishMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

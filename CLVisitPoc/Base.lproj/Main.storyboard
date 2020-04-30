@@ -48,23 +48,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNc-ir-1SA">
-                                <rect key="frame" x="20" y="425.5" width="374" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="nc5-iP-ndP"/>
-                                </constraints>
-                                <state key="normal" title="Clear Map &amp; log  Data"/>
-                                <connections>
-                                    <action selector="clearBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="eYS-kk-s9u"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="5fk-ca-bRu">
+                                <rect key="frame" x="132" y="399.5" width="150" height="97"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNc-ir-1SA">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="nc5-iP-ndP"/>
+                                        </constraints>
+                                        <state key="normal" title="Clear Map &amp; log  Data"/>
+                                        <connections>
+                                            <action selector="clearBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="eYS-kk-s9u"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRS-Cw-aTc">
+                                        <rect key="frame" x="0.0" y="52" width="150" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="ucE-vN-sVp"/>
+                                        </constraints>
+                                        <state key="normal" title="Export Data"/>
+                                        <connections>
+                                            <action selector="exportBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="Db9-VS-ohX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="iNc-ir-1SA" firstAttribute="centerX" secondItem="MOx-ds-PMZ" secondAttribute="centerX" id="FUd-St-SuS"/>
-                            <constraint firstItem="iNc-ir-1SA" firstAttribute="centerY" secondItem="MOx-ds-PMZ" secondAttribute="centerY" id="FWd-Xb-4Wc"/>
-                            <constraint firstItem="MQj-o2-Kz7" firstAttribute="trailing" secondItem="iNc-ir-1SA" secondAttribute="trailing" constant="20" id="UAS-4J-pkc"/>
-                            <constraint firstItem="iNc-ir-1SA" firstAttribute="leading" secondItem="MQj-o2-Kz7" secondAttribute="leading" constant="20" id="vqa-bt-YFp"/>
+                            <constraint firstItem="5fk-ca-bRu" firstAttribute="centerX" secondItem="MOx-ds-PMZ" secondAttribute="centerX" id="Ouf-WQ-7Wp"/>
+                            <constraint firstItem="5fk-ca-bRu" firstAttribute="centerY" secondItem="MOx-ds-PMZ" secondAttribute="centerY" id="mML-av-CBR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MQj-o2-Kz7"/>
                     </view>

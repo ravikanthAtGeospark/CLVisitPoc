@@ -34,6 +34,8 @@ class LocationManager: NSObject {
     
     
     func startTracking(){
+        Utilis.savePDFData("Initialized CLLocationManager 1")
+
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
@@ -44,6 +46,7 @@ class LocationManager: NSObject {
     }
     
     func stopTracking(){
+        Utilis.savePDFData("Stop CLLocationManager 1")
         locationManager.stopMonitoringVisits()
         locationManager.stopMonitoringSignificantLocationChanges()
     }
@@ -61,47 +64,57 @@ extension LocationManager:CLLocationManagerDelegate{
         
         if manager == locationManager {
             if isSignificantLocationChanges(location){
-                saveLogs(manager.location!, "SignificantLocation")
+                Utilis.saveLogsMap(manager.location!, "SignificantLocation")
                 self.requestLocationOnce()
                 self.activityString = "W"
+                Utilis.savePDFData("********  Requesting location for Significant ***********")
             }
         }else{
-            print("didUpdateLocations Precise" )
             if activityString == "R"{
+                Utilis.savePDFData("------------ Precise location for Region Monitoring  ------------")
                 locationType = regionString
             }else if activityString == "S"{
+                Utilis.savePDFData("&&&&&&&&&&   Precise location for Vist  &&&&&&&&&&")
                 locationType = visitString
             }else{
+                Utilis.savePDFData("***********   Precise location for Significant Changes  ***********")
                 locationType = significantString
                 self.saveLocation(manager.location!)
             }
-            saveLogs(manager.location!, "Precise location ")
+            NotificationCenter.default.post(name: .newLocationSaved, object: self, userInfo: nil)
+            Utilis.saveLogsMap(location, "Precise location")
             updateLocation(location, locationType,activityString)
         }
     }
     
-    
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if manager == locationManager{
+            Utilis.savePDFData("------------  Requesting location for Region Monitoring ---------------")
             self.activityString = "R"
-            saveLogs(manager.location!, "Region Monitoring ")
+            Utilis.saveLogsMap(manager.location!, "Region Monitoring ")
             self.requestLocationOnce()
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-        saveLogs(manager.location!,visitString)
-        self.requestLocationOnce()
+        if manager == locationManager {
+            Utilis.savePDFData("&&&&&&&&&&  Requesting location for Visit  &&&&&&&&&&&&&&&&&&&&&&&&&")
+            Utilis.saveLogsMap(manager.location!,visitString)
+            self.requestLocationOnce()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
+        print("didFailWithError",error)
+        Utilis.savePDFData("CLLocation Manager Error \(manager == locationManager) \("               ") )\(error.localizedDescription)")
+
     }
     
     // MARK: Create Geofence
     
     func createSingle(_ coordinate: CLLocationCoordinate2D){
         cleareGeofence()
+        Utilis.savePDFData("==========  Creating Geofence  ==========")
         let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,longitude: coordinate.longitude),radius:regionRadius,  identifier:regionIdentifier)
         region.notifyOnEntry = true
         region.notifyOnExit = true
@@ -109,6 +122,8 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func cleareGeofence(){
+        Utilis.savePDFData("==========  Clearing previous Geofence  ==========")
+
         locationManager.monitoredRegions.forEach { region in
             locationManager.stopMonitoring(for: region)
         }
@@ -120,6 +135,8 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func saveLocation(_ location:CLLocation){
+        Utilis.savePDFData("Saving Location")
+
         UserDefaults.standard.set(location.coordinate.latitude, forKey: "latitude")
         UserDefaults.standard.set(location.coordinate.longitude, forKey: "longitude")
         UserDefaults.standard.set(location.horizontalAccuracy, forKey: "accuracy")
@@ -128,6 +145,7 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func getLastLocation() -> CLLocation?{
+        Utilis.savePDFData("Checking for last Location")
         let lat = UserDefaults.standard.double(forKey: "latitude")
         let lng = UserDefaults.standard.double(forKey: "longitude")
         let time = UserDefaults.standard.object(forKey: "timestamp")
@@ -142,6 +160,9 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func isSignificantLocationChanges( _ location:CLLocation) -> Bool{
+
+        Utilis.savePDFData("Checking is Significant Location")
+
         let lastLocation = getLastLocation()
         let isFirst = UserDefaults.standard.bool(forKey: isFirstLocation)
         if isFirst == false{
@@ -154,6 +175,8 @@ extension LocationManager:CLLocationManagerDelegate{
             let timeDifference = location.timestamp.timeIntervalSince(lastLocation!.timestamp)
             let distanceDifference = location.distance(from: lastLocation!)
             let accuracyDifference = lastLocation!.horizontalAccuracy > location.horizontalAccuracy
+            Utilis.savePDFData("Checking SignificantLocation Time \(timeDifference) Distance \(distanceDifference) Accuracy \(accuracyDifference)")
+
             if timeDifference.minutes >= 5{
                 return true
             }else if distanceDifference  > 300 {
@@ -166,27 +189,7 @@ extension LocationManager:CLLocationManagerDelegate{
         }
         
     }
-    
-    func saveLogs(_ location:CLLocation,_ descr:String){
-        
-        let dataDictionary = ["desc":"\(descr ) \("     ") \(location.description)","timeStamp":currentTimestamp()]
-        var dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyMapLocation")
-        if let _ = dataArray {
-            dataArray?.append(dataDictionary)
-        }else{
-            dataArray = [dataDictionary]
-        }
-        UserDefaults.standard.set(dataArray, forKey: "GeoSparkKeyMapLocation")
-        UserDefaults.standard.synchronize()
-    }
-    
-    func currentTimestamp() -> String {
-        let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm:ss"
-        let date = Date()
-        return dateFormatter.string(from: date)
-    }
-
+   
 }
 
 extension LocationManager{
@@ -197,6 +200,7 @@ extension LocationManager{
         locationManager1.allowsBackgroundLocationUpdates = true
         locationManager1.pausesLocationUpdatesAutomatically = false
         locationManager1.requestLocation()
+        Utilis.savePDFData("==========  Requesting location Once  ==========")
     }
     
 }
