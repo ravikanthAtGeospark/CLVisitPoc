@@ -107,7 +107,6 @@ extension LocationManager:CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("didFailWithError",error)
         Utilis.savePDFData("CLLocation Manager Error \(manager == locationManager) \("               ") )\(error.localizedDescription)")
-
     }
     
     // MARK: Create Geofence
@@ -195,6 +194,7 @@ extension LocationManager:CLLocationManagerDelegate{
 extension LocationManager{
     
     func requestLocationOnce(){
+        isRequestLocation = true
         let locationManager1 = CLLocationManager()
         locationManager1.delegate = self
         locationManager1.allowsBackgroundLocationUpdates = true

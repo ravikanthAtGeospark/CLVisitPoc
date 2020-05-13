@@ -21,8 +21,6 @@ class PDFCreator: NSObject {
   func createFlyer() -> Data {
     // 1
     let pdfMetaData = [
-      kCGPDFContextCreator: "iOS Developer",
-      kCGPDFContextAuthor: "GeoSpark.co",
       kCGPDFContextTitle: title
     ]
     let format = UIGraphicsPDFRendererFormat()
@@ -30,7 +28,7 @@ class PDFCreator: NSObject {
     
     // 2
     let pageWidth = 8.5 * 72.0
-    let pageHeight = 11 * 72.0
+    let pageHeight = 120 * 72.0
     let pageRect = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
     
     // 3
@@ -41,7 +39,7 @@ class PDFCreator: NSObject {
       context.beginPage()
       // 6
       let titleBottom = addTitle(pageRect: pageRect)
-      addBodyText(pageRect: pageRect, textTop: titleBottom + 18.0)
+      addBodyText(pageRect: pageRect, textTop: titleBottom + 5)
       
     }
     
@@ -50,7 +48,7 @@ class PDFCreator: NSObject {
   
   func addTitle(pageRect: CGRect) -> CGFloat {
     // 1
-    let titleFont = UIFont.systemFont(ofSize: 18.0, weight: .bold)
+    let titleFont = UIFont.systemFont(ofSize: 12.0, weight: .bold)
     // 2
     let titleAttributes: [NSAttributedString.Key: Any] =
       [NSAttributedString.Key.font: titleFont]
@@ -69,7 +67,7 @@ class PDFCreator: NSObject {
 
   func addBodyText(pageRect: CGRect, textTop: CGFloat) {
     // 1
-    let textFont = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+    let textFont = UIFont.systemFont(ofSize: 11.0, weight: .regular)
     // 2
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .natural

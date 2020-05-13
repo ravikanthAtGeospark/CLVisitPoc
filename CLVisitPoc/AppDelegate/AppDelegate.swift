@@ -58,10 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
     
     func updateLocation(_ location: CLLocation, desc: String, activity: String) {
-        Utilis.savePDFData("Updating Precise location will be Notified.. \n \(location.description)")
+        Utilis.savePDFData("Updating Precise location will be Notified.. \(desc )\n \(location.description)")
         self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
         Utilis.saveLocationToLocal(location)
-        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus())
+        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus(), userId: getUUID())
         
         do {
             MQTTManager.sharedInstance.publish(try json.jsonString())
@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         Utilis.savePDFData("Show Notification")
         LoggerManager.sharedInstance.writeLocationToFile("\(desc ) \("     ")\(location.description)")
         let content = UNMutableNotificationContent()
-        content.title = "Location Update 📌"
+        content.title = "Location Update \(desc)"
         content.body = location.description
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -88,6 +88,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     func batteryStatus() -> Int{
         return Int(UIDevice.current.batteryLevel*100)
     }
+    
+    func getUUID() -> String{
+        return (UIDevice.current.identifierForVendor?.uuidString)!
+    }
+
     
 
 }

@@ -53,12 +53,18 @@ class ClearViewController: UIViewController {
         }
         
 
-        let pdfCreator = PDFCreator(title: "CLVisit", body: dataString)
+        let deviceName = UIDevice().type.rawValue  + "    " + getUUID()
+        let pdfCreator = PDFCreator(title: deviceName , body: dataString)
         let pdfData = pdfCreator.createFlyer()
         let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
         present(vc, animated: true, completion: nil)
        
     }
+    
+     func getUUID() -> String{
+        return (UIDevice.current.identifierForVendor?.uuidString)!
+    }
+
 
 
 }

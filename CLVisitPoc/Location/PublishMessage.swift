@@ -18,6 +18,7 @@ struct PublishMessage:Codable {
     let speed:Double
     let bearing: Double
     let battery:Int
+    let userId:String
 
 }
 
