@@ -39,8 +39,9 @@ class Utilis: NSObject {
     }
 
     
-    static func saveLocationToLocal(_ location:CLLocation) {
-        let dataDictionary = ["latitude" : location.coordinate.latitude, "longitude" : location.coordinate.longitude,"desc":"Precise location \("    ") \(location.description)","timeStamp" : currentTimestamp()] as [String : Any]
+    static func saveLocationToLocal(_ location:CLLocation,activity:String) {
+        print("saveLocationToLocal",activity)
+        let dataDictionary = ["latitude" : location.coordinate.latitude, "longitude" : location.coordinate.longitude,"desc":"Precise location \("    ") \(location.description)","timeStamp" : currentTimestamp(),"activity":activity] as [String : Any]
         var dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyForLatLongInfo")
         if let _ = dataArray {
             dataArray?.append(dataDictionary)

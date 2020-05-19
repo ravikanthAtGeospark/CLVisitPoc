@@ -11,6 +11,7 @@
 		7B599A672431EBAE004FDCBD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B599A662431EBAE004FDCBD /* MapViewController.swift */; };
 		7B5A5B77245AF788007B6FCE /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5A5B76245AF788007B6FCE /* PDFCreator.swift */; };
 		7B683C2B2456FDB10024EA09 /* ClearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B683C2A2456FDB10024EA09 /* ClearViewController.swift */; };
+		7B7D239F246D61F5000D6CDB /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D239E246D61F5000D6CDB /* awsconfiguration.json */; };
 		7B7D5120242CA89500D3A415 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D511F242CA89500D3A415 /* AppDelegate.swift */; };
 		7B7D5122242CA89500D3A415 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D5121242CA89500D3A415 /* SceneDelegate.swift */; };
 		7B7D5127242CA89500D3A415 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5125242CA89500D3A415 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		7B7D5141242CD86400D3A415 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D513F242CD86400D3A415 /* LocationTableViewCell.swift */; };
 		7B7D5142242CD86400D3A415 /* LocationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5140242CD86400D3A415 /* LocationTableViewCell.xib */; };
 		7B7D5175242E170100D3A415 /* Route.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 7B7D5174242E170100D3A415 /* Route.gpx */; };
+		7B7FE217246E859B0021CE63 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7FE216246E859B0021CE63 /* DeviceInfo.swift */; };
 		7B9E255E246C11AD0024260D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E255D246C11AD0024260D /* Extensions.swift */; };
 		7BC8FDC72459A39F00DC5E0D /* Utilis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC8FDC62459A39F00DC5E0D /* Utilis.swift */; };
 		7BE0A8C724500DC400243EB8 /* PublishMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE0A8C624500DC400243EB8 /* PublishMessage.swift */; };
@@ -35,6 +37,7 @@
 		7B599A662431EBAE004FDCBD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B5A5B76245AF788007B6FCE /* PDFCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		7B683C2A2456FDB10024EA09 /* ClearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearViewController.swift; sourceTree = "<group>"; };
+		7B7D239E246D61F5000D6CDB /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		7B7D511C242CA89500D3A415 /* 2.3 POC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2.3 POC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7D511F242CA89500D3A415 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B7D5121242CA89500D3A415 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		7B7D513F242CD86400D3A415 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		7B7D5140242CD86400D3A415 /* LocationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationTableViewCell.xib; sourceTree = "<group>"; };
 		7B7D5174242E170100D3A415 /* Route.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Route.gpx; sourceTree = "<group>"; };
+		7B7FE216246E859B0021CE63 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		7B9E255D246C11AD0024260D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7BC8FDC62459A39F00DC5E0D /* Utilis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilis.swift; sourceTree = "<group>"; };
 		7BE0A8C624500DC400243EB8 /* PublishMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublishMessage.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 		7B7D511E242CA89500D3A415 /* CLVisitPoc */ = {
 			isa = PBXGroup;
 			children = (
+				7B7D239E246D61F5000D6CDB /* awsconfiguration.json */,
 				7B7D5174242E170100D3A415 /* Route.gpx */,
 				7B599A682431EBBB004FDCBD /* AppDelegate */,
 				7B599A652431EB95004FDCBD /* ViewController */,
@@ -149,6 +154,7 @@
 				7BE0A8CB245020AC00243EB8 /* AWSConstant.swift */,
 				7BC8FDC62459A39F00DC5E0D /* Utilis.swift */,
 				7B9E255D246C11AD0024260D /* Extensions.swift */,
+				7B7FE216246E859B0021CE63 /* DeviceInfo.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -224,6 +230,7 @@
 			files = (
 				7B7D512C242CA89800D3A415 /* LaunchScreen.storyboard in Resources */,
 				7B7D5129242CA89800D3A415 /* Assets.xcassets in Resources */,
+				7B7D239F246D61F5000D6CDB /* awsconfiguration.json in Resources */,
 				7B7D5175242E170100D3A415 /* Route.gpx in Resources */,
 				7B7D5142242CD86400D3A415 /* LocationTableViewCell.xib in Resources */,
 				7B7D5127242CA89500D3A415 /* Main.storyboard in Resources */,
@@ -283,6 +290,7 @@
 				7B683C2B2456FDB10024EA09 /* ClearViewController.swift in Sources */,
 				7B7D5139242CD1AB00D3A415 /* LogsViewController.swift in Sources */,
 				7B7D5120242CA89500D3A415 /* AppDelegate.swift in Sources */,
+				7B7FE217246E859B0021CE63 /* DeviceInfo.swift in Sources */,
 				7B7D5122242CA89500D3A415 /* SceneDelegate.swift in Sources */,
 				7BC8FDC72459A39F00DC5E0D /* Utilis.swift in Sources */,
 				7B7D5135242CB14500D3A415 /* Logger.swift in Sources */,
@@ -438,7 +446,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = B92BAJFGJP;
 				INFOPLIST_FILE = CLVisitPoc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -446,7 +454,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geospark.ionic;
 				PRODUCT_NAME = "2.3 POC";
 				SWIFT_VERSION = 5.0;
@@ -460,7 +468,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = B92BAJFGJP;
 				INFOPLIST_FILE = CLVisitPoc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -468,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geospark.ionic;
 				PRODUCT_NAME = "2.3 POC";
 				SWIFT_VERSION = 5.0;

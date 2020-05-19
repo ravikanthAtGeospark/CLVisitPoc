@@ -31,7 +31,7 @@ class LocationManager: NSObject {
     private var isRequestLocation:Bool  = false
     private var activityString:String = ""
     private var locationType:String = ""
-    
+    private var isUpdateLocation:Bool = false
     
     func startTracking(){
         Utilis.savePDFData("Initialized CLLocationManager 1")
@@ -51,6 +51,13 @@ class LocationManager: NSObject {
         locationManager.stopMonitoringSignificantLocationChanges()
     }
     
+    func updateCurrentLocation(){
+        let loca = CLLocationManager()
+        loca.delegate = self
+        self.isUpdateLocation = true
+        loca.requestLocation()
+    }
+    
 }
 
 extension LocationManager:CLLocationManagerDelegate{
@@ -62,6 +69,9 @@ extension LocationManager:CLLocationManagerDelegate{
             return
         }
         
+        if isUpdateLocation{
+            updateLocation(location, "U","S")
+        }
         if manager == locationManager {
             if isSignificantLocationChanges(location){
                 Utilis.saveLogsMap(manager.location!, "SignificantLocation")

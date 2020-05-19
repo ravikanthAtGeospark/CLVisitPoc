@@ -60,10 +60,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     func updateLocation(_ location: CLLocation, desc: String, activity: String) {
         Utilis.savePDFData("Updating Precise location will be Notified.. \(desc )\n \(location.description)")
         self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
-        Utilis.saveLocationToLocal(location)
-        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, activity: activity, speed: location.speed, bearing: location.course, battery: batteryStatus(), userId: getUUID())
-        
+        Utilis.saveLocationToLocal(location, activity: activity)
+        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, speed: location.speed, battery: DeviceInfo.batteryStatus(), altitude: location.altitude, deviceId: DeviceInfo.getUUID(), carrier_name: DeviceInfo.carrierName(), course: location.course.description, device_model: DeviceInfo.deviceModel(), os_version: DeviceInfo.osVersion(), location_permission: DeviceInfo.locationStatus(), timeStamp: Date().iso8601, batteryStatus: DeviceInfo.batteryState())
+                
         do {
+            MQTTManager.sharedInstance.connect()
             MQTTManager.sharedInstance.publish(try json.jsonString())
         }
         catch{

@@ -11,16 +11,14 @@ import AWSCore
 
 //WARNING: To run this sample correctly, you must set the following constants.
 
-let CertificateSigningRequestCommonName = "Parkinglot"
+let CertificateSigningRequestCommonName = "MotionPOC"
 let CertificateSigningRequestCountryName = "India"
 let CertificateSigningRequestOrganizationName = "GeoSpark"
 let CertificateSigningRequestOrganizationalUnitName = "Inc"
-let PolicyName = "IOTPolicy"
-
-let toTopicSubscribe = "localgateway_to_awsiot"
-
-
+let PolicyName = "motionpociotpolicy"
+let toTopicSubscribe = "locations"
 // This is the endpoint in your AWS IoT console. eg: https://xxxxxxxxxx.iot.<region>.amazonaws.com
-let AWSRegion = AWSRegionType.USEast1 // e.g. AWSRegionType.USEast1
-let IOT_ENDPOINT = "https://az91jf6dri5ey-ats.iot.us-east-1.amazonaws.com/"
+let AWSRegion = AWSRegionType.EUCentral1 // e.g. AWSRegionType.USEast1
+let IOT_ENDPOINT = "https://az91jf6dri5ey-ats.iot.eu-central-1.amazonaws.com/"
 let ASWIoTDataManager = "MyIotDataManager"
+

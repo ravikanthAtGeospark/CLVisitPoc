@@ -95,10 +95,25 @@ class MapViewController: UIViewController, MKMapViewDelegate{
             let long = locDict["longitude"] as! Double
             let annotation = Station(latitude: lat, longitude: long)
             annotation.title = locDict["desc"] as? String
+            let activity = locDict["activity"] as? String
+            annotation.subtitle = activity!
             annotations.append(annotation)
         }
         return annotations
     }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+        if annotation.subtitle == "R"{
+            annotationView.pinTintColor = UIColor.blue
+        }else if annotation.subtitle == "W"{
+            annotationView.pinTintColor = UIColor.green
+        }else{
+            annotationView.pinTintColor = UIColor.red
+        }
+        return annotationView
+    }
+
     
     func clearMonitoring(){
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }

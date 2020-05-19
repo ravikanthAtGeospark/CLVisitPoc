@@ -19,7 +19,7 @@ class MQTTManager: NSObject {
     @objc var iot: AWSIoT!
     
     @objc var connected = false;
-
+    
     override init() {
         super.init()
         
@@ -59,32 +59,32 @@ class MQTTManager: NSObject {
             DispatchQueue.main.async {
                 switch(status)
                 {
-                    case .connected:
-                        print("Connected....:\(status.rawValue)")
-                        self.connected = true
-                        let uuid = UUID().uuidString;
-                        let defaults = UserDefaults.standard
-                        let certificateId = defaults.string( forKey: "certificateId")
-                        print("Using certificate:\n\(certificateId!)\n\n\nClient ID:\n\(uuid)")
-                    case .disconnected:
-                        print("Disconnected....:\(status.rawValue)")
-                        self.connect()
-                    default:
-                        print("Unknown State  :\(status.rawValue)")
+                case .connected:
+                    print("Connected....:\(status.rawValue)")
+                    self.connected = true
+                    let uuid = UUID().uuidString;
+                    let defaults = UserDefaults.standard
+                    let certificateId = defaults.string( forKey: "certificateId")
+                    print("Using certificate:\n\(certificateId!)\n\n\nClient ID:\n\(uuid)")
+                case .disconnected:
+                    print("Disconnected....:\(status.rawValue)")
+                    self.connect()
+                default:
+                    print("Unknown State  :\(status.rawValue)")
                 }
                 print("connection status = \(status.rawValue)")
             }
         }
- 
+        
         if (connected == false)
         {
             let defaults = UserDefaults.standard
             var certificateId = defaults.string( forKey: "certificateId")
-
+            
             if (certificateId == nil)
             {
                 DispatchQueue.main.async {
-                  print("No identity available, searching bundle...")
+                    print("No identity available, searching bundle...")
                 }
                 
                 // No certificate ID has been stored in the user defaults; check to see if any .p12 files
@@ -121,10 +121,10 @@ class MQTTManager: NSObject {
                     DispatchQueue.main.async {
                         print("No identity found in bundle, creating one...")
                     }
-
+                    
                     // Now create and store the certificate ID in NSUserDefaults
                     let csrDictionary = [ "commonName":CertificateSigningRequestCommonName, "countryName":CertificateSigningRequestCountryName, "organizationName":CertificateSigningRequestOrganizationName, "organizationalUnitName":CertificateSigningRequestOrganizationalUnitName ]
-
+                    
                     self.iotManager.createKeysAndCertificate(fromCsr: csrDictionary, callback: {  (response ) -> Void in
                         if (response != nil)
                         {
@@ -132,7 +132,7 @@ class MQTTManager: NSObject {
                             defaults.set(response?.certificateArn, forKey:"certificateArn")
                             certificateId = response?.certificateId
                             print("response: [\(String(describing: response))]")
-
+                            
                             let attachPrincipalPolicyRequest = AWSIoTAttachPrincipalPolicyRequest()
                             attachPrincipalPolicyRequest?.policyName = PolicyName
                             attachPrincipalPolicyRequest?.principal = response?.certificateArn
@@ -148,9 +148,9 @@ class MQTTManager: NSObject {
                                 if (task.error == nil)
                                 {
                                     DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
-                                       print("Using certificate: \(certificateId!)")
+                                        print("Using certificate: \(certificateId!)")
                                         self.iotDataManager.connect( withClientId: uuid, cleanSession:true, certificateId:certificateId!, statusCallback: mqttEventCallback)
-
+                                        
                                     })
                                 }
                                 return nil
@@ -168,7 +168,7 @@ class MQTTManager: NSObject {
             else
             {
                 let uuid = UUID().uuidString;
-
+                
                 // Connect to the AWS IoT service
                 iotDataManager.connect( withClientId: uuid, cleanSession:true, certificateId:certificateId!, statusCallback: mqttEventCallback)
             }
@@ -176,14 +176,14 @@ class MQTTManager: NSObject {
         else
         {
             print("Disconnecting...")
-
+            
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                 self.iotDataManager.disconnect();
             }
         }
     }
     
-
+    
     func subscribeTopic(){
         iotDataManager.subscribe(toTopic: toTopicSubscribe, qoS: .messageDeliveryAttemptedAtMostOnce) { (payload) in
             let stringValue = NSString(data: payload, encoding: String.Encoding.utf8.rawValue)!
