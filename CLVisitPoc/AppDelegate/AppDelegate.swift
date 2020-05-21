@@ -13,6 +13,7 @@ import CoreLocation
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
+    var mqttManager = MQTTManager()
     
     fileprivate var currentBGTask: UIBackgroundTaskIdentifier?
     static let geoCoder = CLGeocoder()
@@ -22,13 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         
         
         UIDevice.current.isBatteryMonitoringEnabled = true
-
+        
         LocationManager.sharedInstance.startTracking()
         LocationManager.sharedInstance.delegate = self
         
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in
         }
         
+        mqttManager.connect()
         self.registerBG()
         return true
     }
@@ -62,15 +64,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
         Utilis.saveLocationToLocal(location, activity: activity)
         let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, speed: location.speed, battery: DeviceInfo.batteryStatus(), altitude: location.altitude, deviceId: DeviceInfo.getUUID(), carrier_name: DeviceInfo.carrierName(), course: location.course.description, device_model: DeviceInfo.deviceModel(), os_version: DeviceInfo.osVersion(), location_permission: DeviceInfo.locationStatus(), timeStamp: Date().iso8601, batteryStatus: DeviceInfo.batteryState())
-                
-        do {
-            MQTTManager.sharedInstance.connect()
-            MQTTManager.sharedInstance.publish(try json.jsonString())
+        
+        do{
+            if mqttManager.connected{
+                mqttManager.publish(try json.jsonString())
+            }else{
+                mqttManager.connect()
+                mqttManager.publish(try json.jsonString())
+            }
         }
         catch{
             print("Catch Error")
         }
-        
     }
     
     func updateData(_ location: CLLocation, desc: String, activity: String) {
@@ -83,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "\(location.timestamp)", content: content, trigger: trigger)
         center.add(request, withCompletionHandler: nil)
-
+        
     }
     
     func batteryStatus() -> Int{
@@ -93,9 +98,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     func getUUID() -> String{
         return (UIDevice.current.identifierForVendor?.uuidString)!
     }
-
     
-
+    
+    
 }
 
 extension TimeInterval {

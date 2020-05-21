@@ -3,4 +3,86 @@
    uuid = "F7D65535-67A5-43C2-B332-36004C8893AB"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "29A397B4-B0AA-4521-B05F-42CBBA88D635"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CLVisitPoc/Location/MQTTManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "init()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "29A397B4-B0AA-4521-B05F-42CBBA88D635 - ef645d152bf03be9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__3_POC.MQTTManager.init() -&gt; __3_POC.MQTTManager"
+                  moduleName = "2.3 POC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geosparkmac15/Work/POC/CLVisitPoc/CLVisitPoc/Location/MQTTManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "556">
+               </Location>
+               <Location
+                  uuid = "29A397B4-B0AA-4521-B05F-42CBBA88D635 - eab509d84fcae2ed"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;AWSMobileClient.UserState&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in __3_POC.MQTTManager.init() -&gt; __3_POC.MQTTManager"
+                  moduleName = "2.3 POC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geosparkmac15/Work/POC/CLVisitPoc/CLVisitPoc/Location/MQTTManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "120">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4F6644DF-F2AD-40A7-99A8-E34B3340D72A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CLVisitPoc/Location/MQTTManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CA94645D-43EB-4E23-A8E5-26E77ACD69AA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CLVisitPoc/ViewController/MapViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "setAnnotations()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -71,7 +71,11 @@ extension LocationManager:CLLocationManagerDelegate{
         
         if isUpdateLocation{
             updateLocation(location, "U","S")
+            NotificationCenter.default.post(name: .newLocationSaved, object: self, userInfo: nil)
+            Utilis.saveLogsMap(location, "Update Lcoation")
+            return
         }
+        
         if manager == locationManager {
             if isSignificantLocationChanges(location){
                 Utilis.saveLogsMap(manager.location!, "SignificantLocation")
@@ -101,13 +105,14 @@ extension LocationManager:CLLocationManagerDelegate{
         if manager == locationManager{
             Utilis.savePDFData("------------  Requesting location for Region Monitoring ---------------")
             self.activityString = "R"
-            Utilis.saveLogsMap(manager.location!, "Region Monitoring ")
+            Utilis.saveLogsMap(manager.location!,regionString)
             self.requestLocationOnce()
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         if manager == locationManager {
+            self.activityString = "S"
             Utilis.savePDFData("&&&&&&&&&&  Requesting location for Visit  &&&&&&&&&&&&&&&&&&&&&&&&&")
             Utilis.saveLogsMap(manager.location!,visitString)
             self.requestLocationOnce()

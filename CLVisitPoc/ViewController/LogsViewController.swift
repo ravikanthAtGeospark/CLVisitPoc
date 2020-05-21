@@ -21,14 +21,14 @@ class LogsViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(newLocationAdded(_:)),
+            selector: #selector(serverLogs),
             name: .newLocationSaved,
             object: nil)
         
         
     }
     
-    func serverLogs(){
+    @objc func serverLogs(){
         let dataArray = UserDefaults.standard.array(forKey: "GeoSparkKeyMapLocation")
         if dataArray?.count != 0 && dataArray != nil{
             dataCount = dataArray as! [Dictionary<String,Any>]
