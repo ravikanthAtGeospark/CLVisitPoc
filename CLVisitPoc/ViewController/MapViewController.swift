@@ -28,6 +28,7 @@ class MapViewController: UIViewController, MKMapViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.mapView.delegate = self
         setAnnotations()
         NotificationCenter.default.addObserver(self, selector: #selector(setAnnotations), name: .newLocationSaved, object: nil)
     }
@@ -44,6 +45,8 @@ class MapViewController: UIViewController, MKMapViewDelegate{
                 let dateVal = data.element
                 dataValue.append(dateVal)
             }
+            
+            print(datas?.count)
             
             let annotations = getMapAnnotations(dataValue)
             mapView.addAnnotations(annotations)
@@ -69,7 +72,7 @@ class MapViewController: UIViewController, MKMapViewDelegate{
     func zoomToRegion(_ location:CLLocationCoordinate2D) {
         
         let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000.0, longitudinalMeters: 7000.0)
-        mapView.setRegion(region, animated: true)
+        mapView.setRegion(region, animated: false)
     }
     
     
@@ -103,17 +106,32 @@ class MapViewController: UIViewController, MKMapViewDelegate{
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-        if annotation.subtitle == "R"{
-            annotationView.pinTintColor = UIColor.blue
-        }else if annotation.subtitle == "W"{
-            annotationView.pinTintColor = UIColor.green
-        }else{
-            annotationView.pinTintColor = UIColor.red
+        
+        if annotation is MKUserLocation { return nil }   // let the OS show user locations itself
+        
+        let identifier = "pinAnnotation"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+        } else {
+            annotationView?.annotation = annotation
         }
+        
+        if annotation.subtitle == "R"{
+            annotationView!.pinTintColor = UIColor.blue
+        }else if annotation.subtitle == "W"{
+            annotationView!.pinTintColor = UIColor.green
+        }else{
+            annotationView!.pinTintColor = UIColor.red
+        }
+        annotationView!.displayPriority = .required
+        annotationView!.canShowCallout = true
+        
         return annotationView
     }
-
     
     func clearMonitoring(){
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }

@@ -111,6 +111,7 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        visit.A
         if manager == locationManager {
             self.activityString = "S"
             Utilis.savePDFData("&&&&&&&&&&  Requesting location for Visit  &&&&&&&&&&&&&&&&&&&&&&&&&")
