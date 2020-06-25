@@ -66,7 +66,12 @@ extension LocationManager:CLLocationManagerDelegate{
             return
         }
         
-     
+
+        if let getLocationCompletionHandler = self.getCurrentLocationHandlerNew {
+                 getLocationCompletionHandler!(locations.last,nil)
+                 return
+             }
+
         
         if checkIsFirst(){
             self.activityString = "W"
@@ -76,16 +81,12 @@ extension LocationManager:CLLocationManagerDelegate{
         }else{
             if isSignificantLocationChanges(location) && isUpdateLocation == false{
                 self.getCurrentLocationNew { (location, errorStatus) in
-                    Utilis.saveLogsMap(manager.location!,self.regionString)
+                    Utilis.saveLogsMap(manager.location!,self.significantString)
                     self.updateLocation(location!, self.significantString, "W")
                 }
             }
         }
         
-        if let getLocationCompletionHandler = self.getCurrentLocationHandlerNew {
-                 getLocationCompletionHandler!(locations.last,nil)
-                 return
-             }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
@@ -103,7 +104,7 @@ extension LocationManager:CLLocationManagerDelegate{
         self.isUpdateLocation = true
         self.getCurrentLocationNew { (location, error) in
             self.isUpdateLocation = false
-            Utilis.saveLogsMap(manager.location!,self.regionString)
+            Utilis.saveLogsMap(manager.location!,self.visitString)
             self.updateLocation(location!,self.visitString,"S")
         }
     }
