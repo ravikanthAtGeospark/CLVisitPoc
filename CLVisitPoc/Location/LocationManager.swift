@@ -10,14 +10,18 @@ import Foundation
 import CoreLocation
 
 
+public typealias MotionCurrentLocationCompletionhandler = (( _ location:CLLocation?,_ error:String?) -> Void)?
+
 protocol LocationManagerDelegate {
     func updateLocation(_ location:CLLocation,desc:String,activity:String)
 }
 class LocationManager: NSObject {
     
+    private var getCurrentLocationHandlerNew : MotionCurrentLocationCompletionhandler?
+    
     private let regionString = "Region Monitoring"
     private let visitString = "Did Visit"
-    private let significantString = "Significant"
+    private let significantString = "Significant Location"
     
     public static let sharedInstance = LocationManager()
     var delegate:LocationManagerDelegate?
@@ -35,7 +39,7 @@ class LocationManager: NSObject {
     
     func startTracking(){
         Utilis.savePDFData("Initialized CLLocationManager 1")
-
+        
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
@@ -51,13 +55,6 @@ class LocationManager: NSObject {
         locationManager.stopMonitoringSignificantLocationChanges()
     }
     
-    func updateCurrentLocation(){
-        let loca = CLLocationManager()
-        loca.delegate = self
-        self.isUpdateLocation = true
-        loca.requestLocation()
-    }
-    
 }
 
 extension LocationManager:CLLocationManagerDelegate{
@@ -69,67 +66,56 @@ extension LocationManager:CLLocationManagerDelegate{
             return
         }
         
-        if isUpdateLocation{
-            updateLocation(location, "U","S")
-            NotificationCenter.default.post(name: .newLocationSaved, object: self, userInfo: nil)
-            Utilis.saveLogsMap(location, "Update Lcoation")
-            return
+     
+        
+        if checkIsFirst(){
+            self.activityString = "W"
+            Utilis.saveLogsMap(manager.location!, "SignificantLocation")
+            self.updateLocation(location, self.significantString,"W")
+
+        }else{
+            if isSignificantLocationChanges(location) && isUpdateLocation == false{
+                self.getCurrentLocationNew { (location, errorStatus) in
+                    Utilis.saveLogsMap(manager.location!,self.regionString)
+                    self.updateLocation(location!, self.significantString, "W")
+                }
+            }
         }
         
-        if manager == locationManager {
-            if isSignificantLocationChanges(location){
-                Utilis.saveLogsMap(manager.location!, "SignificantLocation")
-                self.requestLocationOnce()
-                self.activityString = "W"
-                Utilis.savePDFData("********  Requesting location for Significant ***********")
-            }
-        }else{
-            if activityString == "R"{
-                Utilis.savePDFData("------------ Precise location for Region Monitoring  ------------")
-                locationType = regionString
-            }else if activityString == "S"{
-                Utilis.savePDFData("&&&&&&&&&&   Precise location for Vist  &&&&&&&&&&")
-                locationType = visitString
-            }else{
-                Utilis.savePDFData("***********   Precise location for Significant Changes  ***********")
-                locationType = significantString
-                self.saveLocation(manager.location!)
-            }
-            NotificationCenter.default.post(name: .newLocationSaved, object: self, userInfo: nil)
-            Utilis.saveLogsMap(location, "Precise location")
-            updateLocation(location, locationType,activityString)
-        }
+        if let getLocationCompletionHandler = self.getCurrentLocationHandlerNew {
+                 getLocationCompletionHandler!(locations.last,nil)
+                 return
+             }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if manager == locationManager{
-            Utilis.savePDFData("------------  Requesting location for Region Monitoring ---------------")
-            self.activityString = "R"
-            Utilis.saveLogsMap(manager.location!,regionString)
-            self.requestLocationOnce()
+        self.activityString = "R"
+        self.isUpdateLocation = true
+        self.getCurrentLocationNew { (location, error) in
+            self.isUpdateLocation = false
+            Utilis.saveLogsMap(manager.location!,self.regionString)
+            self.updateLocation(location!, self.regionString,"R")
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-        visit.A
-        if manager == locationManager {
-            self.activityString = "S"
-            Utilis.savePDFData("&&&&&&&&&&  Requesting location for Visit  &&&&&&&&&&&&&&&&&&&&&&&&&")
-            Utilis.saveLogsMap(manager.location!,visitString)
-            self.requestLocationOnce()
+        self.activityString = "S"
+        self.isUpdateLocation = true
+        self.getCurrentLocationNew { (location, error) in
+            self.isUpdateLocation = false
+            Utilis.saveLogsMap(manager.location!,self.regionString)
+            self.updateLocation(location!,self.visitString,"S")
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("didFailWithError",error)
-        Utilis.savePDFData("CLLocation Manager Error \(manager == locationManager) \("               ") )\(error.localizedDescription)")
     }
     
     // MARK: Create Geofence
     
     func createSingle(_ coordinate: CLLocationCoordinate2D){
         cleareGeofence()
-        Utilis.savePDFData("==========  Creating Geofence  ==========")
         let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,longitude: coordinate.longitude),radius:regionRadius,  identifier:regionIdentifier)
         region.notifyOnEntry = true
         region.notifyOnExit = true
@@ -137,21 +123,19 @@ extension LocationManager:CLLocationManagerDelegate{
     }
     
     func cleareGeofence(){
-        Utilis.savePDFData("==========  Clearing previous Geofence  ==========")
-
         locationManager.monitoredRegions.forEach { region in
             locationManager.stopMonitoring(for: region)
         }
     }
     
     func updateLocation(_ location:CLLocation, _ desc:String,_ activity:String){
+        saveLocation(location)
         createSingle(location.coordinate)
         delegate?.updateLocation(location, desc: desc, activity: activity)
+        NotificationCenter.default.post(name: .newLocationSaved, object: self, userInfo: nil)
     }
     
     func saveLocation(_ location:CLLocation){
-        Utilis.savePDFData("Saving Location")
-
         UserDefaults.standard.set(location.coordinate.latitude, forKey: "latitude")
         UserDefaults.standard.set(location.coordinate.longitude, forKey: "longitude")
         UserDefaults.standard.set(location.horizontalAccuracy, forKey: "accuracy")
@@ -174,10 +158,7 @@ extension LocationManager:CLLocationManagerDelegate{
         return CLLocation()
     }
     
-    func isSignificantLocationChanges( _ location:CLLocation) -> Bool{
-
-        Utilis.savePDFData("Checking is Significant Location")
-
+    func checkIsFirst() -> Bool{
         let lastLocation = getLastLocation()
         let isFirst = UserDefaults.standard.bool(forKey: isFirstLocation)
         if isFirst == false{
@@ -186,25 +167,33 @@ extension LocationManager:CLLocationManagerDelegate{
         } else if lastLocation == nil{
             return true
         }else{
-            
-            let timeDifference = location.timestamp.timeIntervalSince(lastLocation!.timestamp)
-            let distanceDifference = location.distance(from: lastLocation!)
-            let accuracyDifference = lastLocation!.horizontalAccuracy > location.horizontalAccuracy
-            Utilis.savePDFData("Checking SignificantLocation Time \(timeDifference) Distance \(distanceDifference) Accuracy \(accuracyDifference)")
-
-            if timeDifference.minutes >= 5{
-                return true
-            }else if distanceDifference  > 300 {
-                return true
-            } else if accuracyDifference{
-                return true
-            }else{
-                return false
-            }
+            return false
         }
         
     }
-   
+    func isSignificantLocationChanges( _ location:CLLocation) -> Bool{
+        
+        let lastLocation = getLastLocation()
+        let timeDifference = location.timestamp.timeIntervalSince(lastLocation!.timestamp)
+        let distanceDifference = location.distance(from: lastLocation!)
+        let accuracyDifference = lastLocation!.horizontalAccuracy > location.horizontalAccuracy
+        
+        if timeDifference.minutes >= 5{
+            return true
+        } else if distanceDifference  > 300 {
+            return true
+        } else if accuracyDifference{
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func getCurrentLocationNew(handler:MotionCurrentLocationCompletionhandler){
+        locationManager.requestLocation()
+        self.getCurrentLocationHandlerNew = handler
+    }
+    
 }
 
 extension LocationManager{

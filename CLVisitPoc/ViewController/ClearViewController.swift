@@ -28,9 +28,6 @@ class ClearViewController: UIViewController {
      */
     
     
-    @IBAction func updateCurrentBtn(_ sender: Any) {
-        LocationManager.sharedInstance.updateCurrentLocation()
-    }
     
     @IBAction func clearBtn(_ sender: Any) {
         UserDefaults.standard.removeObject(forKey: "GeoSparkKeyForLatLongInfo")

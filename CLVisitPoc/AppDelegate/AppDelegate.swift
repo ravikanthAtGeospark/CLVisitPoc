@@ -13,7 +13,6 @@ import CoreLocation
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
-    var mqttManager = MQTTManager()
     
     fileprivate var currentBGTask: UIBackgroundTaskIdentifier?
     static let geoCoder = CLGeocoder()
@@ -30,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in
         }
         
-        mqttManager.connect()
         self.registerBG()
         return true
     }
@@ -60,27 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,LocationManagerDelegate{
     
     
     func updateLocation(_ location: CLLocation, desc: String, activity: String) {
-        Utilis.savePDFData("Updating Precise location will be Notified.. \(desc )\n \(location.description)")
-        self.updateData(location, desc: "Precise location \("    ") \(location.description)", activity: activity)
+        self.updateData(location, desc: desc + "        " +  location.description, activity: activity)
         Utilis.saveLocationToLocal(location, activity: activity)
-        let json = PublishMessage(lat: location.coordinate.latitude, lng: location.coordinate.longitude, horizontalaccuracy: location.horizontalAccuracy, verticalaccuracy: location.verticalAccuracy, speed: location.speed, battery: DeviceInfo.batteryStatus(), altitude: location.altitude, deviceId: DeviceInfo.getUUID(), carrier_name: DeviceInfo.carrierName(), course: location.course.description, device_model: DeviceInfo.deviceModel(), os_version: DeviceInfo.osVersion(), location_permission: DeviceInfo.locationStatus(), timeStamp: Date().iso8601, batteryStatus: DeviceInfo.batteryState())
-        
-        do{
-            if mqttManager.connected{
-                mqttManager.publish(try json.jsonString())
-            }else{
-                mqttManager.connect()
-                mqttManager.publish(try json.jsonString())
-            }
-        }
-        catch{
-            print("Catch Error")
-        }
+        print(location)
+        print("Activity    \(activity) \("      Type \(desc)")")
     }
     
     func updateData(_ location: CLLocation, desc: String, activity: String) {
-        Utilis.savePDFData("Show Notification")
-        LoggerManager.sharedInstance.writeLocationToFile("\(desc ) \("     ")\(location.description)")
         let content = UNMutableNotificationContent()
         content.title = "Location Update \(desc)"
         content.body = location.description

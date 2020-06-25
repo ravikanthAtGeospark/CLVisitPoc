@@ -40,63 +40,6 @@
             </objects>
             <point key="canvasLocation" x="-1102" y="207"/>
         </scene>
-        <!--Clear-->
-        <scene sceneID="jyP-Fc-de6">
-            <objects>
-                <viewController storyboardIdentifier="ClearViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="C7N-Nd-zbG" customClass="ClearViewController" customModule="__3_POC" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="MOx-ds-PMZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="5fk-ca-bRu">
-                                <rect key="frame" x="132" y="373.5" width="150" height="149"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNc-ir-1SA">
-                                        <rect key="frame" x="0.0" y="0.0" width="150" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="nc5-iP-ndP"/>
-                                        </constraints>
-                                        <state key="normal" title="Clear Map &amp; log  Data"/>
-                                        <connections>
-                                            <action selector="clearBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="eYS-kk-s9u"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Sh-Ll-sNQ">
-                                        <rect key="frame" x="0.0" y="52" width="150" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="CkT-Lf-Dmc"/>
-                                        </constraints>
-                                        <state key="normal" title="Update location"/>
-                                        <connections>
-                                            <action selector="updateCurrentBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="4cF-Nb-Lcb"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRS-Cw-aTc">
-                                        <rect key="frame" x="0.0" y="104" width="150" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="ucE-vN-sVp"/>
-                                        </constraints>
-                                        <state key="normal" title="Export Data"/>
-                                        <connections>
-                                            <action selector="exportBtn:" destination="C7N-Nd-zbG" eventType="touchUpInside" id="Db9-VS-ohX"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="5fk-ca-bRu" firstAttribute="centerX" secondItem="MOx-ds-PMZ" secondAttribute="centerX" id="Ouf-WQ-7Wp"/>
-                            <constraint firstItem="5fk-ca-bRu" firstAttribute="centerY" secondItem="MOx-ds-PMZ" secondAttribute="centerY" id="mML-av-CBR"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="MQj-o2-Kz7"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Clear" image="clear" catalog="system" selectedImage="clear" id="JFA-ik-0dQ"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="095-P5-jqi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1077" y="911"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="qhy-nk-U9u">
             <objects>
@@ -109,7 +52,6 @@
                     <connections>
                         <segue destination="KiR-xc-ZRU" kind="relationship" relationship="viewControllers" id="q2X-yb-PEB"/>
                         <segue destination="Bbg-GC-Lre" kind="relationship" relationship="viewControllers" id="YPr-Eg-O5Z"/>
-                        <segue destination="C7N-Nd-zbG" kind="relationship" relationship="viewControllers" id="9yT-j9-B6o"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DOb-qT-BQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -164,8 +106,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="clear" catalog="system" width="128" height="114"/>
         <image name="list.dash" catalog="system" width="128" height="85"/>
-        <image name="map" catalog="system" width="128" height="113"/>
+        <image name="map" catalog="system" width="32" height="32"/>
     </resources>
 </document>

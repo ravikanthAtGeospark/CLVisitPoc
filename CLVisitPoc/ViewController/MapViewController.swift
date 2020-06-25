@@ -45,9 +45,7 @@ class MapViewController: UIViewController, MKMapViewDelegate{
                 let dateVal = data.element
                 dataValue.append(dateVal)
             }
-            
-            print(datas?.count)
-            
+                        
             let annotations = getMapAnnotations(dataValue)
             mapView.addAnnotations(annotations)
             for annotation in annotations {
